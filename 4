@@ -1,0 +1,30 @@
+import pandas as pd
+import numpy as np
+data_url = "http://lib.stat.cmu.edu/datasets/boston"
+raw_df = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
+data = np.hstack([raw_df.values[::2, :], raw_df.values[1::2, :2]])
+target = raw_df.values[1::2, 2]
+X = data.data
+y = data.target
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+print("Mean Squared Error:", mse)
+cross_deviation = np.mean((y_pred - np.mean(y_test)) ** 2)
+print("Cross-deviation:", cross_deviation)
+deviation_about_x = np.mean((y_test - np.mean(y_test)) ** 2)
+print("Deviation about x:", deviation_about_x)
+coefficients = model.coef_
+intercept = model.intercept_
+print("Coefficients:", coefficients)
+print("Intercept:", intercept)
+def plot_regression_line(X, y, y_pred):
+    plt.scatter(X, y, color='blue')
+    plt.plot(X, y_pred, color='red')
+    plt.xlabel('X')
+    plt.ylabel('y')
+    plt.title('Linear Regression')
+    plt.show()
+plot_regression_line(X_test[:, 0], y_test, y_pred)
