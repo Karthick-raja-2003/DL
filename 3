@@ -1,0 +1,13 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import cross_val_score
+from sklearn.svm import SVC
+data = load_breast_cancer()
+X = data.data
+y = data.target
+svm_classifier = SVC()
+cv_scores = cross_val_score(svm_classifier, X, y, cv=5)
+print("Cross-validation scores:", cv_scores)
+print("Mean CV accuracy:", np.mean(cv_scores))
+print("Standard deviation of CV accuracy:", np.std(cv_scores))
